@@ -12,8 +12,14 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
-import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 
 interface Profile {
   id: string;
@@ -31,7 +37,8 @@ const AdminUsers = () => {
   const [profiles, setProfiles] = useState<Profile[]>([]);
   const [userRoles, setUserRoles] = useState<UserRole[]>([]);
   const [loading, setLoading] = useState(true);
-  const [emailForAdmin, setEmailForAdmin] = useState('');
+  const [selectedUserId, setSelectedUserId] = useState<string>('');
+  const [dialogOpen, setDialogOpen] = useState(false);
 
   useEffect(() => {
     fetchData();
@@ -58,27 +65,15 @@ const AdminUsers = () => {
   };
 
   const addAdminRole = async () => {
-    if (!emailForAdmin.trim()) {
-      toast.error('Please enter an email');
+    if (!selectedUserId) {
+      toast.error('Please select a user');
       return;
     }
 
     try {
-      const profile = profiles.find((p) => p.email?.toLowerCase() === emailForAdmin.trim().toLowerCase());
-      
-      if (!profile) {
-        toast.error('User not found with that email');
-        return;
-      }
-
-      if (!profile.id) {
-        toast.error('Invalid user profile');
-        return;
-      }
-
       // Check if user already has admin role
       const existingRole = userRoles.find(
-        (r) => r.user_id === profile.id && r.role === 'admin'
+        (r) => r.user_id === selectedUserId && r.role === 'admin'
       );
 
       if (existingRole) {
@@ -89,14 +84,18 @@ const AdminUsers = () => {
       const { error } = await supabase
         .from('user_roles')
         .insert({ 
-          user_id: profile.id, 
+          user_id: selectedUserId, 
           role: 'admin' 
         });
 
-      if (error) throw error;
+      if (error) {
+        console.error('Supabase error:', error);
+        throw error;
+      }
 
       toast.success('Admin role added successfully');
-      setEmailForAdmin('');
+      setSelectedUserId('');
+      setDialogOpen(false);
       fetchData();
     } catch (error: any) {
       console.error('Error adding admin role:', error);
@@ -127,6 +126,11 @@ const AdminUsers = () => {
     return userRoles.find((r) => r.user_id === userId);
   };
 
+  // Get users without admin role
+  const usersWithoutAdminRole = profiles.filter(
+    (profile) => !userRoles.some((role) => role.user_id === profile.id && role.role === 'admin')
+  );
+
   if (loading) {
     return <p className="text-center py-8">Loading users...</p>;
   }
@@ -135,7 +139,7 @@ const AdminUsers = () => {
     <div className="space-y-4">
       <div className="flex justify-between items-center">
         <h2 className="text-2xl font-heading font-bold">User Management</h2>
-        <Dialog>
+        <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
           <DialogTrigger asChild>
             <Button>
               <UserPlus className="w-4 h-4 mr-2" />
@@ -148,16 +152,31 @@ const AdminUsers = () => {
             </DialogHeader>
             <div className="space-y-4 py-4">
               <div className="space-y-2">
-                <Label htmlFor="email">User Email</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="user@example.com"
-                  value={emailForAdmin}
-                  onChange={(e) => setEmailForAdmin(e.target.value)}
-                />
+                <Label htmlFor="user-select">Select User</Label>
+                {usersWithoutAdminRole.length === 0 ? (
+                  <p className="text-sm text-muted-foreground">
+                    All users already have admin roles or no users available
+                  </p>
+                ) : (
+                  <Select value={selectedUserId} onValueChange={setSelectedUserId}>
+                    <SelectTrigger id="user-select">
+                      <SelectValue placeholder="Select a user" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {usersWithoutAdminRole.map((profile) => (
+                        <SelectItem key={profile.id} value={profile.id}>
+                          {profile.full_name || 'No name'} ({profile.email})
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                )}
               </div>
-              <Button onClick={addAdminRole} className="w-full">
+              <Button 
+                onClick={addAdminRole} 
+                className="w-full"
+                disabled={!selectedUserId}
+              >
                 Add Admin Role
               </Button>
             </div>

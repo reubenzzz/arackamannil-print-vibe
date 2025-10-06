@@ -5,6 +5,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import AdminInquiries from '@/components/admin/AdminInquiries';
 import AdminGallery from '@/components/admin/AdminGallery';
 import AdminReviews from '@/components/admin/AdminReviews';
+import AdminUsers from '@/components/admin/AdminUsers';
 import { Shield } from 'lucide-react';
 
 const Admin = () => {
@@ -45,10 +46,11 @@ const Admin = () => {
         </div>
 
         <Tabs defaultValue="inquiries" className="w-full">
-          <TabsList className="grid w-full grid-cols-3 mb-8">
-            <TabsTrigger value="inquiries">Contact Inquiries</TabsTrigger>
+          <TabsList className="grid w-full grid-cols-4 mb-8">
+            <TabsTrigger value="inquiries">Inquiries</TabsTrigger>
             <TabsTrigger value="gallery">Gallery</TabsTrigger>
             <TabsTrigger value="reviews">Reviews</TabsTrigger>
+            <TabsTrigger value="users">Users</TabsTrigger>
           </TabsList>
 
           <TabsContent value="inquiries">
@@ -61,6 +63,10 @@ const Admin = () => {
 
           <TabsContent value="reviews">
             <AdminReviews />
+          </TabsContent>
+
+          <TabsContent value="users">
+            <AdminUsers />
           </TabsContent>
         </Tabs>
       </div>

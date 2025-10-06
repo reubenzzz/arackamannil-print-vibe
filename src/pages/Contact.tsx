@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import { Phone, Mail, Instagram, MessageCircle, Facebook } from 'lucide-react';
+import { motion } from 'framer-motion';
 import { Card, CardContent } from '@/components/ui/card';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { z } from 'zod';
+import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 
 const contactSchema = z.object({
   name: z.string().trim().min(1, 'Name is required').max(100, 'Name must be less than 100 characters'),
@@ -14,6 +16,9 @@ const contactSchema = z.object({
 const Contact = () => {
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const heroAnimation = useScrollAnimation();
+  const cardsAnimation = useScrollAnimation();
+  const formAnimation = useScrollAnimation();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -99,26 +104,35 @@ const Contact = () => {
   return (
     <div className="min-h-screen py-20">
       <div className="container mx-auto px-4">
-        <div className="text-center mb-16 animate-fade-in">
+        <motion.div
+          ref={heroAnimation.ref}
+          initial={{ opacity: 0, y: 50 }}
+          animate={heroAnimation.isVisible ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.8 }}
+          className="text-center mb-16"
+        >
           <h1 className="text-5xl font-heading font-bold text-foreground mb-4">
             Get in Touch
           </h1>
           <p className="text-xl font-body text-muted-foreground max-w-2xl mx-auto">
             We'd love to hear from you. Choose your preferred way to connect with us.
           </p>
-        </div>
+        </motion.div>
 
-        <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
+        <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16" ref={cardsAnimation.ref}>
           {contactMethods.map((method, index) => (
-            <a
+            <motion.a
               key={index}
               href={method.link}
               target="_blank"
               rel="noopener noreferrer"
-              className="block animate-scale-in"
-              style={{ animationDelay: `${index * 100}ms` }}
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={cardsAnimation.isVisible ? { opacity: 1, scale: 1 } : {}}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
+              whileHover={{ scale: 1.05, y: -10 }}
+              className="block"
             >
-              <Card className="border-border hover:border-primary transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 cursor-pointer group h-full">
+              <Card className="border-border hover:border-primary transition-all duration-300 hover:shadow-2xl cursor-pointer group h-full">
                 <CardContent className="p-8 text-center">
                   <div className="mb-4 flex justify-center">
                     <div className="p-4 bg-secondary rounded-full group-hover:scale-110 transition-transform duration-300">
@@ -133,12 +147,18 @@ const Contact = () => {
                   </p>
                 </CardContent>
               </Card>
-            </a>
+            </motion.a>
           ))}
         </div>
 
         {/* Contact Form */}
-        <div className="max-w-2xl mx-auto animate-slide-up">
+        <motion.div
+          ref={formAnimation.ref}
+          initial={{ opacity: 0, y: 50 }}
+          animate={formAnimation.isVisible ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.8 }}
+          className="max-w-2xl mx-auto"
+        >
           <Card className="border-border shadow-lg">
             <CardContent className="p-8">
               <h2 className="text-2xl font-heading font-bold text-foreground mb-6 text-center">
@@ -203,7 +223,7 @@ const Contact = () => {
               </form>
             </CardContent>
           </Card>
-        </div>
+        </motion.div>
       </div>
     </div>
   );

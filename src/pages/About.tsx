@@ -1,7 +1,13 @@
 import { CheckCircle, Award, Users, Clock } from 'lucide-react';
+import { motion } from 'framer-motion';
 import { Card, CardContent } from '@/components/ui/card';
+import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 
 const About = () => {
+  const heroAnimation = useScrollAnimation();
+  const storyAnimation = useScrollAnimation();
+  const featuresAnimation = useScrollAnimation();
+  const valuesAnimation = useScrollAnimation();
   const features = [
     {
       icon: Award,
@@ -24,17 +30,29 @@ const About = () => {
     <div className="min-h-screen py-20">
       <div className="container mx-auto px-4">
         {/* Hero Section */}
-        <div className="text-center mb-16 animate-fade-in">
+        <motion.div
+          ref={heroAnimation.ref}
+          initial={{ opacity: 0, y: 50 }}
+          animate={heroAnimation.isVisible ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.8 }}
+          className="text-center mb-16"
+        >
           <h1 className="text-5xl font-heading font-bold text-foreground mb-6">
             About Arackamannil Printers
           </h1>
           <p className="text-xl font-body text-muted-foreground max-w-3xl mx-auto">
             Your Trusted Partner in Quality Printing Solutions
           </p>
-        </div>
+        </motion.div>
 
         {/* Story Section */}
-        <div className="max-w-4xl mx-auto mb-16 animate-slide-up">
+        <motion.div
+          ref={storyAnimation.ref}
+          initial={{ opacity: 0, x: -50 }}
+          animate={storyAnimation.isVisible ? { opacity: 1, x: 0 } : {}}
+          transition={{ duration: 0.8 }}
+          className="max-w-4xl mx-auto mb-16"
+        >
           <Card className="border-border shadow-lg">
             <CardContent className="p-8 md:p-12">
               <h2 className="text-3xl font-heading font-bold text-foreground mb-6">
@@ -53,40 +71,56 @@ const About = () => {
               </div>
             </CardContent>
           </Card>
-        </div>
+        </motion.div>
 
         {/* Features Section */}
         <div className="mb-16">
-          <h2 className="text-3xl font-heading font-bold text-foreground text-center mb-12">
+          <motion.h2
+            ref={featuresAnimation.ref}
+            initial={{ opacity: 0, y: 30 }}
+            animate={featuresAnimation.isVisible ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.6 }}
+            className="text-3xl font-heading font-bold text-foreground text-center mb-12"
+          >
             Why Choose Us?
-          </h2>
+          </motion.h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {features.map((feature, index) => (
-              <Card
+              <motion.div
                 key={index}
-                className="border-border hover:border-primary transition-all duration-300 hover:shadow-xl animate-scale-in"
-                style={{ animationDelay: `${index * 100}ms` }}
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={featuresAnimation.isVisible ? { opacity: 1, scale: 1 } : {}}
+                transition={{ duration: 0.5, delay: index * 0.15 }}
+                whileHover={{ scale: 1.05, y: -5 }}
               >
-                <CardContent className="p-8 text-center">
-                  <div className="mb-4 flex justify-center">
-                    <div className="p-4 bg-primary/10 rounded-full">
-                      <feature.icon className="w-10 h-10 text-primary" />
+                <Card className="border-border hover:border-primary transition-all duration-300 hover:shadow-xl h-full">
+                  <CardContent className="p-8 text-center">
+                    <div className="mb-4 flex justify-center">
+                      <div className="p-4 bg-primary/10 rounded-full">
+                        <feature.icon className="w-10 h-10 text-primary" />
+                      </div>
                     </div>
-                  </div>
-                  <h3 className="text-xl font-heading font-semibold text-foreground mb-3">
-                    {feature.title}
-                  </h3>
-                  <p className="text-muted-foreground font-body">
-                    {feature.description}
-                  </p>
-                </CardContent>
-              </Card>
+                    <h3 className="text-xl font-heading font-semibold text-foreground mb-3">
+                      {feature.title}
+                    </h3>
+                    <p className="text-muted-foreground font-body">
+                      {feature.description}
+                    </p>
+                  </CardContent>
+                </Card>
+              </motion.div>
             ))}
           </div>
         </div>
 
         {/* Values Section */}
-        <div className="max-w-4xl mx-auto">
+        <motion.div
+          ref={valuesAnimation.ref}
+          initial={{ opacity: 0, y: 50 }}
+          animate={valuesAnimation.isVisible ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.8 }}
+          className="max-w-4xl mx-auto"
+        >
           <Card className="border-border shadow-lg bg-secondary/50">
             <CardContent className="p-8 md:p-12">
               <h2 className="text-3xl font-heading font-bold text-foreground mb-8 text-center">
@@ -100,15 +134,21 @@ const About = () => {
                   'Integrity: Honest pricing and transparent communication in all dealings',
                   'Community: Proud to serve and give back to our local community',
                 ].map((value, index) => (
-                  <div key={index} className="flex items-start space-x-3 animate-fade-in" style={{ animationDelay: `${index * 100}ms` }}>
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, x: -30 }}
+                    animate={valuesAnimation.isVisible ? { opacity: 1, x: 0 } : {}}
+                    transition={{ duration: 0.5, delay: index * 0.1 }}
+                    className="flex items-start space-x-3"
+                  >
                     <CheckCircle className="w-6 h-6 text-accent flex-shrink-0 mt-1" />
                     <p className="text-foreground font-body text-lg">{value}</p>
-                  </div>
+                  </motion.div>
                 ))}
               </div>
             </CardContent>
           </Card>
-        </div>
+        </motion.div>
       </div>
     </div>
   );

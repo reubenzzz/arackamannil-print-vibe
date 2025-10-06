@@ -1,10 +1,12 @@
 import { Link, useLocation } from 'react-router-dom';
-import { Moon, Sun, Printer } from 'lucide-react';
-import { useTheme } from '@/contexts/ThemeContext';
+import { Moon, Sun, Printer, LogOut, LogIn, Shield } from 'lucide-react';
+import { useTheme } from '@/contexts/ThemeProvider';
+import { useAuth } from '@/contexts/AuthContext';
 import { Button } from './ui/button';
 
 const Navbar = () => {
   const { theme, toggleTheme } = useTheme();
+  const { user, isAdmin, signOut } = useAuth();
   const location = useLocation();
 
   const isActive = (path: string) => location.pathname === path;
@@ -52,6 +54,20 @@ const Navbar = () => {
               Contact Us
             </Link>
 
+            {isAdmin && (
+              <Link
+                to="/admin"
+                className={`font-body font-medium transition-smooth flex items-center gap-1 ${
+                  isActive('/admin') 
+                    ? 'text-primary' 
+                    : 'text-muted-foreground hover:text-foreground'
+                }`}
+              >
+                <Shield className="w-4 h-4" />
+                Admin
+              </Link>
+            )}
+
             <Button
               variant="ghost"
               size="icon"
@@ -64,6 +80,29 @@ const Navbar = () => {
                 <Sun className="h-5 w-5" />
               )}
             </Button>
+
+            {user ? (
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={signOut}
+                className="transition-smooth hover:bg-secondary"
+                title="Sign Out"
+              >
+                <LogOut className="h-5 w-5" />
+              </Button>
+            ) : (
+              <Link to="/auth">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="transition-smooth hover:bg-secondary"
+                  title="Admin Login"
+                >
+                  <LogIn className="h-5 w-5" />
+                </Button>
+              </Link>
+            )}
           </div>
         </div>
       </div>

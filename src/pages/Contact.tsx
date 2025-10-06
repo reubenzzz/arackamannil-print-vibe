@@ -1,7 +1,63 @@
+import { useState } from 'react';
 import { Phone, Mail, Instagram, MessageCircle, Facebook } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
+import { supabase } from '@/integrations/supabase/client';
+import { toast } from 'sonner';
+import { z } from 'zod';
+
+const contactSchema = z.object({
+  name: z.string().trim().min(1, 'Name is required').max(100, 'Name must be less than 100 characters'),
+  email: z.string().trim().email('Invalid email address').max(255, 'Email must be less than 255 characters'),
+  message: z.string().trim().min(1, 'Message is required').max(1000, 'Message must be less than 1000 characters'),
+});
 
 const Contact = () => {
+  const [loading, setLoading] = useState(false);
+  const [errors, setErrors] = useState<Record<string, string>>({});
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setErrors({});
+    setLoading(true);
+
+    const formData = new FormData(e.currentTarget);
+    const data = {
+      name: formData.get('name') as string,
+      email: formData.get('email') as string,
+      message: formData.get('message') as string,
+    };
+
+    try {
+      // Validate input
+      contactSchema.parse(data);
+
+      // Save to database
+      const { error } = await supabase
+        .from('contact_inquiries')
+        .insert([data]);
+
+      if (error) throw error;
+
+      toast.success('Message sent successfully! We\'ll get back to you soon.');
+      (e.target as HTMLFormElement).reset();
+    } catch (error: any) {
+      if (error instanceof z.ZodError) {
+        const fieldErrors: Record<string, string> = {};
+        error.errors.forEach((err) => {
+          if (err.path[0]) {
+            fieldErrors[err.path[0] as string] = err.message;
+          }
+        });
+        setErrors(fieldErrors);
+        toast.error('Please check your input');
+      } else {
+        toast.error('Failed to send message. Please try again.');
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const contactMethods = [
     {
       icon: Phone,
@@ -88,16 +144,22 @@ const Contact = () => {
               <h2 className="text-2xl font-heading font-bold text-foreground mb-6 text-center">
                 Send Us a Message
               </h2>
-              <form className="space-y-6">
+              <form onSubmit={handleSubmit} className="space-y-6">
                 <div>
                   <label className="block text-sm font-body font-medium text-foreground mb-2">
                     Name
                   </label>
                   <input
                     type="text"
+                    name="name"
                     className="w-full px-4 py-3 border border-border rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary transition-smooth"
                     placeholder="Your name"
+                    required
+                    maxLength={100}
                   />
+                  {errors.name && (
+                    <p className="text-destructive text-sm mt-1">{errors.name}</p>
+                  )}
                 </div>
                 <div>
                   <label className="block text-sm font-body font-medium text-foreground mb-2">
@@ -105,9 +167,15 @@ const Contact = () => {
                   </label>
                   <input
                     type="email"
+                    name="email"
                     className="w-full px-4 py-3 border border-border rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary transition-smooth"
                     placeholder="your.email@example.com"
+                    required
+                    maxLength={255}
                   />
+                  {errors.email && (
+                    <p className="text-destructive text-sm mt-1">{errors.email}</p>
+                  )}
                 </div>
                 <div>
                   <label className="block text-sm font-body font-medium text-foreground mb-2">
@@ -115,15 +183,22 @@ const Contact = () => {
                   </label>
                   <textarea
                     rows={5}
+                    name="message"
                     className="w-full px-4 py-3 border border-border rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary transition-smooth resize-none"
                     placeholder="Tell us how we can help you..."
+                    required
+                    maxLength={1000}
                   />
+                  {errors.message && (
+                    <p className="text-destructive text-sm mt-1">{errors.message}</p>
+                  )}
                 </div>
                 <button
                   type="submit"
-                  className="w-full hero-gradient text-primary-foreground font-body font-semibold py-3 rounded-lg hover:opacity-90 transition-smooth"
+                  disabled={loading}
+                  className="w-full hero-gradient text-primary-foreground font-body font-semibold py-3 rounded-lg hover:opacity-90 transition-smooth disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  Send Message
+                  {loading ? 'Sending...' : 'Send Message'}
                 </button>
               </form>
             </CardContent>

@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import HeroSlider from '@/components/HeroSlider';
 import Categories from '@/components/Categories';
 import Reviews from '@/components/Reviews';
+import ReviewForm from '@/components/ReviewForm';
 import { Button } from '@/components/ui/button';
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 
@@ -41,6 +42,8 @@ const Home = () => {
       </section>
 
       <Reviews />
+      
+      <ReviewForm />
     </div>
   );
 };

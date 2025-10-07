@@ -1,10 +1,7 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
-import businessImg from '@/assets/category-business.jpg';
-import flexImg from '@/assets/category-flex.jpg';
-import weddingImg from '@/assets/category-wedding.jpg';
-import brochureImg from '@/assets/category-brochure.jpg';
-import bannerImg from '@/assets/category-banner.jpg';
+import { supabase } from '@/integrations/supabase/client';
+import { Loader2 } from 'lucide-react';
 
 const categories = [
   'Business Cards',
@@ -17,30 +14,41 @@ const categories = [
   'Certificates',
   'ID Cards',
   'Stickers & Labels',
-  'Calendars',
-  'Notebooks',
-  'Menu Cards',
-  'Greeting Cards',
-  'Packaging',
-  'Photo Printing',
-  'Canvas Prints',
-  'Roll-up Banners',
-  'Signboards',
-  'Vehicle Graphics',
 ];
 
-const galleryImages = {
-  'Business Cards': [businessImg, businessImg, businessImg, businessImg],
-  'Flex Printing': [flexImg, flexImg, flexImg, flexImg],
-  'Wedding Invitations': [weddingImg, weddingImg, weddingImg, weddingImg],
-  'Brochures & Flyers': [brochureImg, brochureImg, brochureImg, brochureImg],
-  'Banners & Posters': [bannerImg, bannerImg, bannerImg, bannerImg],
-};
+interface GalleryImage {
+  id: string;
+  category: string;
+  image_url: string;
+  title: string | null;
+}
 
 const Gallery = () => {
   const [selectedCategory, setSelectedCategory] = useState(categories[0]);
+  const [images, setImages] = useState<GalleryImage[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const images = (galleryImages as any)[selectedCategory] || [businessImg, businessImg, businessImg, businessImg];
+  useEffect(() => {
+    fetchImages();
+  }, [selectedCategory]);
+
+  const fetchImages = async () => {
+    setLoading(true);
+    try {
+      const { data, error } = await supabase
+        .from('gallery_images')
+        .select('*')
+        .eq('category', selectedCategory)
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+      setImages(data || []);
+    } catch (error) {
+      console.error('Error fetching images:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="min-h-screen py-20">
@@ -92,28 +100,42 @@ const Gallery = () => {
               </p>
             </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-              {images.map((image: string, index: number) => (
-                <Card
-                  key={index}
-                  className="overflow-hidden border-border hover:border-primary transition-all duration-300 hover:shadow-xl group animate-scale-in"
-                  style={{ animationDelay: `${index * 50}ms` }}
-                >
-                  <div className="relative h-64 overflow-hidden">
-                    <img
-                      src={image}
-                      alt={`${selectedCategory} ${index + 1}`}
-                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end">
-                      <p className="p-4 text-foreground font-body font-semibold">
-                        View Details
-                      </p>
+            {loading ? (
+              <div className="flex justify-center items-center py-12">
+                <Loader2 className="w-8 h-8 animate-spin text-primary" />
+              </div>
+            ) : images.length === 0 ? (
+              <Card className="border-border">
+                <CardContent className="py-12 text-center">
+                  <p className="text-muted-foreground font-body">
+                    No images available for this category yet.
+                  </p>
+                </CardContent>
+              </Card>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                {images.map((image, index) => (
+                  <Card
+                    key={image.id}
+                    className="overflow-hidden border-border hover:border-primary transition-all duration-300 hover:shadow-xl group animate-scale-in"
+                    style={{ animationDelay: `${index * 50}ms` }}
+                  >
+                    <div className="relative h-64 overflow-hidden">
+                      <img
+                        src={image.image_url}
+                        alt={image.title || `${selectedCategory} ${index + 1}`}
+                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end">
+                        <p className="p-4 text-foreground font-body font-semibold">
+                          {image.title || 'View Details'}
+                        </p>
+                      </div>
                     </div>
-                  </div>
-                </Card>
-              ))}
-            </div>
+                  </Card>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       </div>

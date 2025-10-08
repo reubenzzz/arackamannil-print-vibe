@@ -50,6 +50,7 @@ const Reviews = () => {
         .from('reviews')
         .select('*')
         .eq('is_approved', true)
+        .order('is_featured', { ascending: false })
         .order('created_at', { ascending: false })
         .limit(4);
 

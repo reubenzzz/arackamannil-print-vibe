@@ -64,6 +64,7 @@ const Gallery = () => {
   return (
     <div className="min-h-screen py-20">
       <div className="container mx-auto px-4">
+        {/* Header */}
         <div className="text-center mb-12 animate-fade-in">
           <h1 className="text-5xl font-heading font-bold text-foreground mb-4">
             Our Gallery
@@ -81,7 +82,8 @@ const Gallery = () => {
                 <h2 className="text-xl font-heading font-bold text-foreground mb-4">
                   Categories
                 </h2>
-                <div className="space-y-2 max-h-[600px] overflow-y-auto pr-2">
+                {/* No scroll on desktop, scroll only on small screens */}
+                <div className="space-y-2 lg:max-h-none max-h-[80vh] overflow-y-auto lg:overflow-visible pr-2">
                   {categories.map((category) => (
                     <button
                       key={category}
@@ -110,7 +112,7 @@ const Gallery = () => {
                 Browse our collection of {selectedCategory.toLowerCase()} samples
               </p>
             </div>
-            
+
             {loading ? (
               <div className="flex justify-center items-center py-12">
                 <Loader2 className="w-8 h-8 animate-spin text-primary" />

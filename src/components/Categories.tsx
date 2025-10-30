@@ -3,15 +3,15 @@ import { motion } from 'framer-motion';
 import CategoryCard from './CategoryCard';
 import { Button } from './ui/button';
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
-import businessImg from '@/assets/category-business.jpg';
-import flexImg from '@/assets/category-flex.jpg';
-import weddingImg from '@/assets/category-wedding.jpg';
-import brochureImg from '@/assets/category-brochure.jpg';
-import bannerImg from '@/assets/category-banner.jpg';
+import businessImg from '@/assets/service-graphic-design.jpg';
+import flexImg from '@/assets/service-flex-printing.jpg';
+import weddingImg from '@/assets/service-laser-printing.jpg';
+import brochureImg from '@/assets/service-offset-printing.jpg';
+import bannerImg from '@/assets/service-plastic-cover.jpg';
 
 const categories = [
   {
-    title: 'Business Cards',
+    title: 'Graphics printing',
     description: 'Professional business cards that make a lasting impression',
     image: businessImg,
   },
@@ -21,17 +21,17 @@ const categories = [
     image: flexImg,
   },
   {
-    title: 'Wedding Invitations',
+    title: 'Laser Printing',
     description: 'Elegant invitations for your special day',
     image: weddingImg,
   },
   {
-    title: 'Brochures & Flyers',
+    title: 'Offset Printing',
     description: 'Eye-catching marketing materials for your business',
     image: brochureImg,
   },
   {
-    title: 'Banners & Posters',
+    title: 'Plastic Cover',
     description: 'Large format printing for events and promotions',
     image: bannerImg,
   },

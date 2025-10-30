@@ -82,7 +82,7 @@ const Contact = () => {
       icon: Instagram,
       label: 'Instagram',
       value: '@arackamannil_printers',
-      link: 'https://www.instagram.com/arackamannil_printers',
+      link: 'https://www.facebook.com/ArackamannilPrinters',
       color: 'text-pink-500',
     },
     {

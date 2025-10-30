@@ -5,7 +5,7 @@ import { Loader2 } from 'lucide-react';
 
 const categories = [
   'Business Cards',
-  'Flex Printing',
+  'Machinery',
   'Wedding Invitations',
   'Brochures & Flyers',
   'Banners & Posters',

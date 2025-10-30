@@ -19,15 +19,15 @@ const Footer = () => {
             <div className="space-y-3">
               <div className="flex items-center space-x-3 text-muted-foreground">
                 <Phone className="w-5 h-5 text-primary" />
-                <span className="font-body">+91 1234567890</span>
+                <span className="font-body">+91 9447207272</span>
               </div>
               <div className="flex items-center space-x-3 text-muted-foreground">
                 <Mail className="w-5 h-5 text-primary" />
-                <span className="font-body">info@arackamannilprinters.com</span>
+                <span className="font-body">arackamannilranny@gmail.com</span>
               </div>
               <div className="flex items-center space-x-3 text-muted-foreground">
                 <MapPin className="w-5 h-5 text-primary" />
-                <span className="font-body">Arackamannil, Kerala, India</span>
+                <span className="font-body">Pazhavangadi P.O Mamukku Ranny,Kerala -689673</span>
               </div>
             </div>
           </div>

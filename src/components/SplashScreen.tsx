@@ -29,7 +29,8 @@ const SplashScreen = ({ onComplete }: { onComplete: () => void }) => {
         <h1 className="text-4xl font-heading font-bold text-foreground mb-2">
           Arackamannil Printers
         </h1>
-        <p className="text-muted-foreground font-body">Quality Prints, Timeless Impressions</p>
+        <p className="text-muted-foreground font-body">We Print What you Think</p>
+        <p className="text-muted-foreground font-body">Since 1972</p>
       </div>
     </div>
   );

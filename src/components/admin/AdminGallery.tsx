@@ -21,13 +21,15 @@ const categories = [
   'Stickers & Labels',
   'Badge',
   'Calender',
-  'Cup and momento Printing'
+  'Cup and momento Printing',
   'Cloth Printing',
   'Dangler',
   'Led',
   'Magazine',
   'Tissue Box',
   'Flag',
+  'Pin Badge',
+  'Other Works',
   'Service',
 ];
 

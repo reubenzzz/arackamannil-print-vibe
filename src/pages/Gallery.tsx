@@ -25,7 +25,6 @@ const categories = [
   'Flag',
   'Pin Badge',
   'Other Works',
-  'Service',
 ];
 
 interface GalleryImage {

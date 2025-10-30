@@ -14,6 +14,13 @@ const categories = [
   'Certificates',
   'ID Cards',
   'Stickers & Labels',
+  'Badge',
+  'Calender',
+  'CLoth Printing',
+  'Dangler',
+  'Led',
+  'Magazine',
+  'Tissue Box',
 ];
 
 interface GalleryImage {

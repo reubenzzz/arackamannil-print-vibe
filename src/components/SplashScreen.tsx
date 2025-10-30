@@ -24,7 +24,7 @@ const SplashScreen = ({ onComplete }) => {
         <div className="mb-6 flex justify-center">
           <div className="relative">
             <img
-              src={logo}
+              src={Logo}
               alt="Arackamannil Printers Logo"
               className="w-24 h-24 animate-pulse object-contain"
             />

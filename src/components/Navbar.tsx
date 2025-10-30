@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Moon, Sun, Printer, LogOut, LogIn, Shield, Menu, X } from 'lucide-react';
+import { Moon, Sun, LogOut, LogIn, Shield, Menu } from 'lucide-react';
 import { useTheme } from '@/contexts/ThemeProvider';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from './ui/button';
 import { Sheet, SheetContent, SheetTrigger } from './ui/sheet';
+import logo from '../assets/Logo.png'; // ✅ same logo as splash screen
 
 const Navbar = () => {
   const { theme, toggleTheme } = useTheme();
@@ -12,16 +13,16 @@ const Navbar = () => {
   const location = useLocation();
   const [isOpen, setIsOpen] = useState(false);
 
-  const isActive = (path: string) => location.pathname === path;
+  const isActive = (path) => location.pathname === path;
 
-  const NavLinks = ({ mobile = false }: { mobile?: boolean }) => (
+  const NavLinks = ({ mobile = false }) => (
     <>
       <Link
         to="/"
         onClick={() => mobile && setIsOpen(false)}
         className={`font-body font-medium transition-smooth ${
-          isActive('/') 
-            ? 'text-primary' 
+          isActive('/')
+            ? 'text-primary'
             : 'text-muted-foreground hover:text-foreground'
         } ${mobile ? 'block py-2' : ''}`}
       >
@@ -31,8 +32,8 @@ const Navbar = () => {
         to="/about"
         onClick={() => mobile && setIsOpen(false)}
         className={`font-body font-medium transition-smooth ${
-          isActive('/about') 
-            ? 'text-primary' 
+          isActive('/about')
+            ? 'text-primary'
             : 'text-muted-foreground hover:text-foreground'
         } ${mobile ? 'block py-2' : ''}`}
       >
@@ -42,8 +43,8 @@ const Navbar = () => {
         to="/contact"
         onClick={() => mobile && setIsOpen(false)}
         className={`font-body font-medium transition-smooth ${
-          isActive('/contact') 
-            ? 'text-primary' 
+          isActive('/contact')
+            ? 'text-primary'
             : 'text-muted-foreground hover:text-foreground'
         } ${mobile ? 'block py-2' : ''}`}
       >
@@ -55,8 +56,8 @@ const Navbar = () => {
           to="/admin"
           onClick={() => mobile && setIsOpen(false)}
           className={`font-body font-medium transition-smooth flex items-center gap-1 ${
-            isActive('/admin') 
-              ? 'text-primary' 
+            isActive('/admin')
+              ? 'text-primary'
               : 'text-muted-foreground hover:text-foreground'
           } ${mobile ? 'py-2' : ''}`}
         >
@@ -71,8 +72,13 @@ const Navbar = () => {
     <nav className="sticky top-0 z-40 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 transition-smooth">
       <div className="container mx-auto px-4">
         <div className="flex h-16 items-center justify-between">
+          {/* ✅ Logo instead of icon */}
           <Link to="/" className="flex items-center space-x-2 group">
-            <Printer className="w-8 h-8 text-primary transition-transform group-hover:scale-110" />
+            <img
+              src={logo}
+              alt="Arackamannil Printers Logo"
+              className="w-10 h-10 rounded-lg object-contain transition-transform group-hover:scale-110"
+            />
             <span className="text-xl font-heading font-bold text-foreground">
               Arackamannil Printers
             </span>
@@ -143,7 +149,7 @@ const Navbar = () => {
               <SheetContent side="right" className="w-64">
                 <div className="flex flex-col space-y-4 mt-8">
                   <NavLinks mobile />
-                  
+
                   <div className="pt-4 border-t border-border">
                     {user ? (
                       <Button

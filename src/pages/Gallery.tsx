@@ -14,7 +14,7 @@ const categories = [
   'Certificates',
   'ID Cards',
   'Stickers & Labels',
-  'Badge',
+  'Layer Badge',
   'Calender',
   'Cup and momento Printing',
   'Cloth Printing',

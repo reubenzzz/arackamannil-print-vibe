@@ -24,6 +24,7 @@ const categories = [
   'Tissue Box',
   'Flag',
   'Service',
+  'Pin Badge'
 ];
 
 interface GalleryImage {

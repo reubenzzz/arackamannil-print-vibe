@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import logo from './assets/logo.png'; // 👈 adjust the path to where your logo is stored
+import logo from './assets/Logo.png'; // 👈 adjust the path to where your logo is stored
 
 const SplashScreen = ({ onComplete }) => {
   const [isVisible, setIsVisible] = useState(true);

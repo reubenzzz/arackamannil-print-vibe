@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-import { Printer } from 'lucide-react';
+import logo from './assets/logo.png'; // 👈 adjust the path to where your logo is stored
 
-const SplashScreen = ({ onComplete }: { onComplete: () => void }) => {
+const SplashScreen = ({ onComplete }) => {
   const [isVisible, setIsVisible] = useState(true);
 
   useEffect(() => {
@@ -20,16 +20,22 @@ const SplashScreen = ({ onComplete }: { onComplete: () => void }) => {
       }`}
     >
       <div className="text-center animate-scale-in">
+        {/* ✅ Replace lucide icon with your logo */}
         <div className="mb-6 flex justify-center">
           <div className="relative">
-            <Printer className="w-20 h-20 text-primary animate-pulse" />
+            <img
+              src={logo}
+              alt="Arackamannil Printers Logo"
+              className="w-24 h-24 animate-pulse object-contain"
+            />
             <div className="absolute inset-0 bg-primary/20 blur-xl rounded-full animate-pulse" />
           </div>
         </div>
+
         <h1 className="text-4xl font-heading font-bold text-foreground mb-2">
           Arackamannil Printers
         </h1>
-        <p className="text-muted-foreground font-body">We Print What you Think</p>
+        <p className="text-muted-foreground font-body">We Print What You Think</p>
         <p className="text-muted-foreground font-body">Since 1972</p>
       </div>
     </div>

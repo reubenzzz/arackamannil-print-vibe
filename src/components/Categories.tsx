@@ -12,7 +12,7 @@ import bannerImg from '@/assets/service-plastic-cover.jpg';
 const categories = [
   {
     title: 'Graphics printing',
-    description: 'Professional business cards that make a lasting impression',
+    description: 'Professional Graphics Printing that make a lasting impression',
     image: businessImg,
   },
   {
@@ -22,17 +22,17 @@ const categories = [
   },
   {
     title: 'Laser Printing',
-    description: 'Elegant invitations for your special day',
+    description: 'Elegant Laser Printing',
     image: weddingImg,
   },
   {
     title: 'Offset Printing',
-    description: 'Eye-catching marketing materials for your business',
+    description: 'Eye-catching offset printing for your business',
     image: brochureImg,
   },
   {
     title: 'Plastic Cover',
-    description: 'Large format printing for events and promotions',
+    description: 'Large format Plastic printing for events and promotions',
     image: bannerImg,
   },
 ];

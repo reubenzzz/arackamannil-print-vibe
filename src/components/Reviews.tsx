@@ -84,7 +84,7 @@ const Reviews = () => {
           transition={{ duration: 0.6 }}
           className="text-center mb-12"
         >
-          <h2 className="text-4xl font-heading font-bold text-foreground mb-4">
+          <h2 className="text-4xl font-heading font-bold text-white mb-4">
             What Our Customers Say
           </h2>
           <p className="text-lg font-body text-muted-foreground max-w-2xl mx-auto">

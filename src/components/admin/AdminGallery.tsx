@@ -10,7 +10,7 @@ import { toast } from 'sonner';
 
 const categories = [
   'Business Cards',
-  'Flex Printing',
+  'Machinery',
   'Wedding Invitations',
   'Brochures & Flyers',
   'Banners & Posters',

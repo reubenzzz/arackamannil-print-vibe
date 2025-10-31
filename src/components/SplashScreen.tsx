@@ -36,7 +36,7 @@ const SplashScreen = ({ onComplete }) => {
           We Print What You Think
         </p>
         <p className="text-gray-600 dark:text-gray-300 font-body">
-          Since 1972
+          Since 1971
         </p>
       </div>
     </div>

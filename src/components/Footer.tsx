@@ -20,7 +20,7 @@ const Footer = () => {
               </span>
             </div>
             <p className="text-muted-foreground font-body mb-6 max-w-md">
-              Your trusted partner for all printing needs. We deliver quality prints with timeless impressions since 1972.
+              Your trusted partner for all printing needs. We deliver quality prints with timeless impressions since 1971.
             </p>
             <div className="space-y-3">
               <div className="flex items-center space-x-3 text-muted-foreground">

@@ -1,4 +1,5 @@
-import { MapPin, Phone, Mail, Printer } from 'lucide-react';
+import { MapPin, Phone, Mail } from 'lucide-react';
+import logo from '../assets/Logo.png'; // ✅ same logo as splash screen
 import { Link } from 'react-router-dom';
 
 const Footer = () => {

@@ -13,6 +13,7 @@ import About from "./pages/About";
 import Contact from "./pages/Contact";
 import Gallery from "./pages/Gallery";
 import Auth from "./pages/Auth";
+import ResetPassword from "./pages/ResetPassword";
 import Admin from "./pages/Admin";
 import NotFound from "./pages/NotFound";
 
@@ -31,8 +32,9 @@ const App = () => {
             {showSplash && <SplashScreen onComplete={() => setShowSplash(false)} />}
             <BrowserRouter>
               <Routes>
-                <Route path="/auth" element={<Auth />} />
-                <Route element={<Layout />}>
+              <Route path="/auth" element={<Auth />} />
+              <Route path="/reset-password" element={<ResetPassword />} />
+              <Route element={<Layout />}>
                   <Route path="/" element={<Home />} />
                   <Route path="/about" element={<About />} />
                   <Route path="/contact" element={<Contact />} />

@@ -166,7 +166,7 @@ const AdminReviews = () => {
                   onClick={() => {
                     navigator.clipboard.writeText(`"${review.comment}" - ${review.customer_name}`);
                     toast.success('Review text copied to clipboard! Opening Google reviews page...');
-                    window.open('https://share.google/Jv47Kw3To7IA00VG0', '_blank');
+                    window.open('https://g.page/r/CRfgjfnVnxk1EAE/review', '_blank');
                   }}
                 >
                   <svg className="w-4 h-4 mr-2" viewBox="0 0 24 24" fill="currentColor">

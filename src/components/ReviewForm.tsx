@@ -163,7 +163,7 @@ const ReviewForm = () => {
               Would you also like to support us on Google? Share your experience directly on our Google Business page!
             </p>
             <a
-              href="https://share.google/Jv47Kw3To7IA00VG0"
+              href="https://g.page/r/CRfgjfnVnxk1EAE/review"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-3 px-6 py-3 border border-border rounded-lg bg-card text-foreground hover:bg-secondary hover:text-primary transition-smooth font-semibold shadow-sm card-hover-glow"

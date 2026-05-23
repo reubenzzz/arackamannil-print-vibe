@@ -5,7 +5,6 @@ import { Card, CardContent } from '@/components/ui/card';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { z } from 'zod';
-import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 
 const reviewSchema = z.object({
   customer_name: z.string().trim().min(1, 'Name is required').max(100, 'Name must be less than 100 characters'),
@@ -18,7 +17,6 @@ const ReviewForm = () => {
   const [rating, setRating] = useState(0);
   const [hoveredRating, setHoveredRating] = useState(0);
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const formAnimation = useScrollAnimation();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -68,9 +66,9 @@ const ReviewForm = () => {
     <section className="py-20 bg-secondary/30">
       <div className="container mx-auto px-4">
         <motion.div
-          ref={formAnimation.ref}
           initial={{ opacity: 0, y: 50 }}
-          animate={formAnimation.isVisible ? { opacity: 1, y: 0 } : {}}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-50px" }}
           transition={{ duration: 0.8 }}
           className="max-w-2xl mx-auto"
         >

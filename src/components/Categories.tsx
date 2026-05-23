@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import CategoryCard from './CategoryCard';
 import { Button } from './ui/button';
-import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 import { supabase } from '@/integrations/supabase/client';
 import businessImg from '@/assets/service-graphic-design.jpg';
 import flexImg from '@/assets/service-flex-printing.jpg';
@@ -40,7 +39,6 @@ const DEFAULT_CATEGORIES = [
 ];
 
 const Categories = () => {
-  const { ref, isVisible } = useScrollAnimation();
   const [categories, setCategories] = useState(DEFAULT_CATEGORIES);
 
   useEffect(() => {
@@ -80,9 +78,9 @@ const Categories = () => {
     <section className="py-20 bg-secondary/30">
       <div className="container mx-auto px-4">
         <motion.div
-          ref={ref}
           initial={{ opacity: 0, y: 50 }}
-          animate={isVisible ? { opacity: 1, y: 0 } : {}}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-50px" }}
           transition={{ duration: 0.6 }}
           className="text-center mb-12"
         >
@@ -99,8 +97,9 @@ const Categories = () => {
             <motion.div
               key={`${category.title}-${index}`}
               initial={{ opacity: 0, scale: 0.8 }}
-              animate={isVisible ? { opacity: 1, scale: 1 } : {}}
-              transition={{ duration: 0.5, delay: index * 0.05 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ duration: 0.5, delay: index * 0.03 }}
               whileHover={{ scale: 1.05 }}
             >
               <CategoryCard {...category} />
@@ -110,8 +109,9 @@ const Categories = () => {
 
         <motion.div
           initial={{ opacity: 0, y: 20 }}
-          animate={isVisible ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6, delay: 0.5 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-50px" }}
+          transition={{ duration: 0.6, delay: 0.2 }}
           className="text-center"
         >
           <Link to="/gallery">

@@ -5,11 +5,8 @@ import Categories from '@/components/Categories';
 import Reviews from '@/components/Reviews';
 import ReviewForm from '@/components/ReviewForm';
 import { Button } from '@/components/ui/button';
-import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 
 const Home = () => {
-  const { ref, isVisible } = useScrollAnimation();
-
   return (
     <div className="min-h-screen">
       <HeroSlider />
@@ -20,9 +17,9 @@ const Home = () => {
       <section className="py-20 bg-background">
         <div className="container mx-auto px-4">
           <motion.div
-            ref={ref}
             initial={{ opacity: 0, y: 50 }}
-            animate={isVisible ? { opacity: 1, y: 0 } : {}}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-50px" }}
             transition={{ duration: 0.8 }}
             className="max-w-4xl mx-auto text-center"
           >

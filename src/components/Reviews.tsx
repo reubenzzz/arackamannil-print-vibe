@@ -4,7 +4,6 @@ import { motion } from 'framer-motion';
 import { Card, CardContent } from './ui/card';
 import { supabase } from '@/integrations/supabase/client';
 import { formatDistanceToNow } from 'date-fns';
-import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 
 interface Review {
   id: string;
@@ -47,7 +46,6 @@ const DEFAULT_REVIEWS: Review[] = [
 
 const Reviews = () => {
   const [reviews, setReviews] = useState<Review[]>(DEFAULT_REVIEWS);
-  const { ref, isVisible } = useScrollAnimation();
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -123,9 +121,9 @@ const Reviews = () => {
     <section className="py-20 bg-background">
       <div className="container mx-auto px-4">
         <motion.div
-          ref={ref}
           initial={{ opacity: 0, y: 50 }}
-          animate={isVisible ? { opacity: 1, y: 0 } : {}}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-50px" }}
           transition={{ duration: 0.6 }}
           className="text-center mb-12"
         >
@@ -142,8 +140,9 @@ const Reviews = () => {
             <motion.div
               key={review.id}
               initial={{ opacity: 0, y: 30 }}
-              animate={isVisible ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ duration: 0.5, delay: index * 0.05 }}
             >
               <Card className="border-border hover:border-accent cursor-pointer card-hover-glow h-full flex flex-col justify-between">
                 <CardContent className="p-6 flex flex-col h-full justify-between">

@@ -62,11 +62,13 @@ const AdminGallery = () => {
 
         if (data && data.length > 0) {
           const customTitles = data.map((cat: any) => cat.title);
-          const uniqueCategories = Array.from(new Set([...DEFAULT_CATEGORIES, ...customTitles]));
-          setCategories(uniqueCategories);
+          const defaultsWithoutOther = DEFAULT_CATEGORIES.filter(c => c !== 'Other Works');
+          const combined = Array.from(new Set([...defaultsWithoutOther, ...customTitles]));
+          const finalCategories = [...combined, 'Other Works'];
+          setCategories(finalCategories);
           
-          if (!uniqueCategories.includes(selectedCategory)) {
-            setSelectedCategory(uniqueCategories[0]);
+          if (!finalCategories.includes(selectedCategory)) {
+            setSelectedCategory(finalCategories[0]);
           }
         }
       } catch (err) {

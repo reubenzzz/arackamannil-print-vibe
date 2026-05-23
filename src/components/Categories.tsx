@@ -1,9 +1,7 @@
-import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import CategoryCard from './CategoryCard';
 import { Button } from './ui/button';
-import { supabase } from '@/integrations/supabase/client';
 import businessImg from '@/assets/service-graphic-design.jpg';
 import flexImg from '@/assets/service-flex-printing.jpg';
 import weddingImg from '@/assets/service-laser-printing.jpg';
@@ -39,41 +37,6 @@ const DEFAULT_CATEGORIES = [
 ];
 
 const Categories = () => {
-  const [categories, setCategories] = useState(DEFAULT_CATEGORIES);
-
-  useEffect(() => {
-    const fetchCustomCategories = async () => {
-      try {
-        const { data, error } = await supabase
-          .from('categories')
-          .select('*')
-          .order('created_at', { ascending: true });
-
-        if (error) {
-          // If the table doesn't exist yet, we will just use defaults
-          console.log('Categories table not found or query error, using defaults:', error);
-          return;
-        }
-
-        if (data && data.length > 0) {
-          // Map dynamic categories to match the structure
-          const customCategories = data.map((cat: any) => ({
-            title: cat.title,
-            description: cat.description,
-            image: cat.image_url || 'https://images.unsplash.com/photo-1562654508-a187af4639ad?q=80&w=800&auto=format&fit=crop',
-          }));
-
-          // Merge custom categories with default ones
-          setCategories([...DEFAULT_CATEGORIES, ...customCategories]);
-        }
-      } catch (err) {
-        console.error('Error fetching custom categories:', err);
-      }
-    };
-
-    fetchCustomCategories();
-  }, []);
-
   return (
     <section className="py-20 bg-secondary/30">
       <div className="container mx-auto px-4">
@@ -93,9 +56,9 @@ const Categories = () => {
         </motion.div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6 mb-12">
-          {categories.map((category, index) => (
+          {DEFAULT_CATEGORIES.map((category, index) => (
             <motion.div
-              key={`${category.title}-${index}`}
+              key={category.title}
               initial={{ opacity: 0, scale: 0.8 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true, margin: "-50px" }}

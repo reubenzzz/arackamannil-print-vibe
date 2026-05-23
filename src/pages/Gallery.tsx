@@ -55,8 +55,9 @@ const Gallery = () => {
 
         if (data && data.length > 0) {
           const customTitles = data.map((cat: any) => cat.title);
-          const uniqueCategories = Array.from(new Set([...DEFAULT_CATEGORIES, ...customTitles]));
-          setCategories(uniqueCategories);
+          const defaultsWithoutOther = DEFAULT_CATEGORIES.filter(c => c !== 'Other Works');
+          const combined = Array.from(new Set([...defaultsWithoutOther, ...customTitles]));
+          setCategories([...combined, 'Other Works']);
         }
       } catch (err) {
         console.error('Error fetching custom categories in Gallery:', err);

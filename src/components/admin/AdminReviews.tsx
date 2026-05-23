@@ -161,6 +161,21 @@ const AdminReviews = () => {
                 </Button>
                 <Button
                   size="sm"
+                  variant="outline"
+                  className="border-primary text-primary hover:bg-primary hover:text-primary-foreground transition-smooth"
+                  onClick={() => {
+                    navigator.clipboard.writeText(`"${review.comment}" - ${review.customer_name}`);
+                    toast.success('Review text copied to clipboard! Opening Google reviews page...');
+                    window.open('https://share.google/Jv47Kw3To7IA00VG0', '_blank');
+                  }}
+                >
+                  <svg className="w-4 h-4 mr-2" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12.24 10.285V14.4h6.887c-.648 2.41-2.519 4.114-6.887 4.114-4.78 0-8.678-3.898-8.678-8.678s3.898-8.678 8.678-8.678c2.258 0 4.29.839 5.86 2.21l3.05-3.05C18.9 1.442 15.776.5 12.24.5 5.756.5.5 5.756.5 12.24s5.256 11.74 11.74 11.74c6.8 0 11.74-4.78 11.74-11.74 0-.8-.086-1.577-.245-2.315H12.24z"/>
+                  </svg>
+                  Feature to Google
+                </Button>
+                <Button
+                  size="sm"
                   variant="destructive"
                   onClick={() => deleteReview(review.id)}
                 >

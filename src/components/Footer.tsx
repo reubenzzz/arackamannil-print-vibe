@@ -79,6 +79,12 @@ const Footer = () => {
             >
               Contact
             </Link>
+            <Link
+              to="/admin"
+              className="text-muted-foreground hover:text-primary transition-smooth font-body text-sm"
+            >
+              Admin Portal
+            </Link>
           </div>
         </div>
       </div>

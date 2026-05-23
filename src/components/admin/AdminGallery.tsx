@@ -8,7 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Upload, Trash2, Image as ImageIcon } from 'lucide-react';
 import { toast } from 'sonner';
 
-const categories = [
+const DEFAULT_CATEGORIES = [
   'Business Cards',
   'Our Capacity',
   'Wedding Invitations',
@@ -40,13 +40,41 @@ interface GalleryImage {
 }
 
 const AdminGallery = () => {
+  const [categories, setCategories] = useState<string[]>(DEFAULT_CATEGORIES);
   const [images, setImages] = useState<GalleryImage[]>([]);
   const [loading, setLoading] = useState(true);
   const [uploading, setUploading] = useState(false);
-  const [selectedCategory, setSelectedCategory] = useState(categories[0]);
+  const [selectedCategory, setSelectedCategory] = useState(DEFAULT_CATEGORIES[0]);
   const [title, setTitle] = useState('');
 
   useEffect(() => {
+    const fetchCustomCategories = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('categories')
+          .select('title')
+          .order('created_at', { ascending: true });
+
+        if (error) {
+          if (error.code === '42P01') return; // categories table doesn't exist
+          throw error;
+        }
+
+        if (data && data.length > 0) {
+          const customTitles = data.map((cat: any) => cat.title);
+          const uniqueCategories = Array.from(new Set([...DEFAULT_CATEGORIES, ...customTitles]));
+          setCategories(uniqueCategories);
+          
+          if (!uniqueCategories.includes(selectedCategory)) {
+            setSelectedCategory(uniqueCategories[0]);
+          }
+        }
+      } catch (err) {
+        console.error('Error fetching custom categories in AdminGallery:', err);
+      }
+    };
+
+    fetchCustomCategories();
     fetchImages();
   }, []);
 

@@ -4,6 +4,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import AdminInquiries from '@/components/admin/AdminInquiries';
 import AdminGallery from '@/components/admin/AdminGallery';
+import AdminCategories from '@/components/admin/AdminCategories';
 import AdminReviews from '@/components/admin/AdminReviews';
 import AdminUsers from '@/components/admin/AdminUsers';
 import { Shield } from 'lucide-react';
@@ -46,9 +47,10 @@ const Admin = () => {
         </div>
 
         <Tabs defaultValue="inquiries" className="w-full">
-          <TabsList className="grid w-full grid-cols-4 mb-8">
+          <TabsList className="grid w-full grid-cols-5 mb-8">
             <TabsTrigger value="inquiries">Inquiries</TabsTrigger>
             <TabsTrigger value="gallery">Gallery</TabsTrigger>
+            <TabsTrigger value="categories">Categories</TabsTrigger>
             <TabsTrigger value="reviews">Reviews</TabsTrigger>
             <TabsTrigger value="users">Users</TabsTrigger>
           </TabsList>
@@ -59,6 +61,10 @@ const Admin = () => {
 
           <TabsContent value="gallery">
             <AdminGallery />
+          </TabsContent>
+
+          <TabsContent value="categories">
+            <AdminCategories />
           </TabsContent>
 
           <TabsContent value="reviews">

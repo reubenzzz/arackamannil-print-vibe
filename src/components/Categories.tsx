@@ -1,15 +1,17 @@
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import CategoryCard from './CategoryCard';
 import { Button } from './ui/button';
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
+import { supabase } from '@/integrations/supabase/client';
 import businessImg from '@/assets/service-graphic-design.jpg';
 import flexImg from '@/assets/service-flex-printing.jpg';
 import weddingImg from '@/assets/service-laser-printing.jpg';
 import brochureImg from '@/assets/service-offset-printing.jpg';
 import bannerImg from '@/assets/service-plastic-cover.jpg';
 
-const categories = [
+const DEFAULT_CATEGORIES = [
   {
     title: 'Graphics printing',
     description: 'Professional Graphics Printing that make a lasting impression',
@@ -39,6 +41,40 @@ const categories = [
 
 const Categories = () => {
   const { ref, isVisible } = useScrollAnimation();
+  const [categories, setCategories] = useState(DEFAULT_CATEGORIES);
+
+  useEffect(() => {
+    const fetchCustomCategories = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('categories')
+          .select('*')
+          .order('created_at', { ascending: true });
+
+        if (error) {
+          // If the table doesn't exist yet, we will just use defaults
+          console.log('Categories table not found or query error, using defaults:', error);
+          return;
+        }
+
+        if (data && data.length > 0) {
+          // Map dynamic categories to match the structure
+          const customCategories = data.map((cat: any) => ({
+            title: cat.title,
+            description: cat.description,
+            image: cat.image_url || 'https://images.unsplash.com/photo-1562654508-a187af4639ad?q=80&w=800&auto=format&fit=crop',
+          }));
+
+          // Merge custom categories with default ones
+          setCategories([...DEFAULT_CATEGORIES, ...customCategories]);
+        }
+      } catch (err) {
+        console.error('Error fetching custom categories:', err);
+      }
+    };
+
+    fetchCustomCategories();
+  }, []);
 
   return (
     <section className="py-20 bg-secondary/30">
@@ -61,10 +97,10 @@ const Categories = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6 mb-12">
           {categories.map((category, index) => (
             <motion.div
-              key={category.title}
+              key={`${category.title}-${index}`}
               initial={{ opacity: 0, scale: 0.8 }}
               animate={isVisible ? { opacity: 1, scale: 1 } : {}}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
+              transition={{ duration: 0.5, delay: index * 0.05 }}
               whileHover={{ scale: 1.05 }}
             >
               <CategoryCard {...category} />
@@ -79,7 +115,7 @@ const Categories = () => {
           className="text-center"
         >
           <Link to="/gallery">
-            <Button size="lg" variant="outline" className="font-semibold border-2 hover:bg-primary hover:text-primary-foreground transition-smooth">
+            <Button size="lg" variant="outline" className="font-semibold border-2 hover:bg-primary hover:text-primary-foreground transition-smooth hover:shadow-lg">
               View Complete Gallery
             </Button>
           </Link>

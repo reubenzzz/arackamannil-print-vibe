@@ -3,7 +3,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { supabase } from '@/integrations/supabase/client';
 import { Loader2 } from 'lucide-react';
 
-const categories = [
+const DEFAULT_CATEGORIES = [
   'Business Cards',
   'Our Capacity',
   'Wedding Invitations',
@@ -35,9 +35,36 @@ interface GalleryImage {
 }
 
 const Gallery = () => {
-  const [selectedCategory, setSelectedCategory] = useState(categories[0]);
+  const [categories, setCategories] = useState<string[]>(DEFAULT_CATEGORIES);
+  const [selectedCategory, setSelectedCategory] = useState(DEFAULT_CATEGORIES[0]);
   const [images, setImages] = useState<GalleryImage[]>([]);
   const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchCustomCategories = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('categories')
+          .select('title')
+          .order('created_at', { ascending: true });
+
+        if (error) {
+          if (error.code === '42P01') return; // categories table doesn't exist
+          throw error;
+        }
+
+        if (data && data.length > 0) {
+          const customTitles = data.map((cat: any) => cat.title);
+          const uniqueCategories = Array.from(new Set([...DEFAULT_CATEGORIES, ...customTitles]));
+          setCategories(uniqueCategories);
+        }
+      } catch (err) {
+        console.error('Error fetching custom categories in Gallery:', err);
+      }
+    };
+
+    fetchCustomCategories();
+  }, []);
 
   useEffect(() => {
     fetchImages();

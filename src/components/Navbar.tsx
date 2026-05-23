@@ -50,26 +50,11 @@ const Navbar = () => {
       >
         Contact Us
       </Link>
-
-      {isAdmin && (
-        <Link
-          to="/admin"
-          onClick={() => mobile && setIsOpen(false)}
-          className={`font-body font-medium transition-smooth flex items-center gap-1 ${
-            isActive('/admin')
-              ? 'text-primary'
-              : 'text-muted-foreground hover:text-foreground'
-          } ${mobile ? 'py-2' : ''}`}
-        >
-          <Shield className="w-4 h-4" />
-          Admin
-        </Link>
-      )}
     </>
   );
 
   return (
-    <nav className="sticky top-0 z-40 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 transition-smooth">
+    <nav className="sticky top-0 z-40 w-full glassmorphism transition-smooth">
       <div className="container mx-auto px-4">
         <div className="flex h-16 items-center justify-between">
           {/* ✅ Logo instead of icon */}
@@ -101,7 +86,7 @@ const Navbar = () => {
               )}
             </Button>
 
-            {user ? (
+            {user && (
               <Button
                 variant="ghost"
                 size="icon"
@@ -111,17 +96,6 @@ const Navbar = () => {
               >
                 <LogOut className="h-5 w-5" />
               </Button>
-            ) : (
-              <Link to="/auth">
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="transition-smooth hover:bg-secondary"
-                  title="Admin Login"
-                >
-                  <LogIn className="h-5 w-5" />
-                </Button>
-              </Link>
             )}
           </div>
 
@@ -150,8 +124,8 @@ const Navbar = () => {
                 <div className="flex flex-col space-y-4 mt-8">
                   <NavLinks mobile />
 
-                  <div className="pt-4 border-t border-border">
-                    {user ? (
+                  {user && (
+                    <div className="pt-4 border-t border-border">
                       <Button
                         variant="ghost"
                         onClick={() => {
@@ -163,15 +137,8 @@ const Navbar = () => {
                         <LogOut className="h-5 w-5 mr-2" />
                         Sign Out
                       </Button>
-                    ) : (
-                      <Link to="/auth" onClick={() => setIsOpen(false)}>
-                        <Button variant="ghost" className="w-full justify-start">
-                          <LogIn className="h-5 w-5 mr-2" />
-                          Admin Login
-                        </Button>
-                      </Link>
-                    )}
-                  </div>
+                    </div>
+                  )}
                 </div>
               </SheetContent>
             </Sheet>

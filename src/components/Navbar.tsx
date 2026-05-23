@@ -50,6 +50,20 @@ const Navbar = () => {
       >
         Contact Us
       </Link>
+      {user && (
+        <Link
+          to="/admin"
+          onClick={() => mobile && setIsOpen(false)}
+          className={`font-body font-medium transition-smooth flex items-center gap-1 ${
+            isActive('/admin')
+              ? 'text-primary'
+              : 'text-muted-foreground hover:text-foreground'
+          } ${mobile ? 'py-2' : ''}`}
+        >
+          <Shield className="w-4 h-4" />
+          Admin
+        </Link>
+      )}
     </>
   );
 

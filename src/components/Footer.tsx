@@ -1,8 +1,11 @@
 import { MapPin, Phone, Mail } from 'lucide-react';
 import logo from '../assets/Logo.png'; // ✅ same logo as splash screen
 import { Link } from 'react-router-dom';
+import { useAuth } from '@/contexts/AuthContext';
 
 const Footer = () => {
+  const { user } = useAuth();
+
   return (
     <footer className="bg-secondary border-t border-border">
       <div className="container mx-auto px-4 py-12">
@@ -79,12 +82,14 @@ const Footer = () => {
             >
               Contact
             </Link>
-            <Link
-              to="/admin"
-              className="text-muted-foreground hover:text-primary transition-smooth font-body text-sm"
-            >
-              Admin Portal
-            </Link>
+            {user && (
+              <Link
+                to="/admin"
+                className="text-muted-foreground hover:text-primary transition-smooth font-body text-sm"
+              >
+                Admin Portal
+              </Link>
+            )}
           </div>
         </div>
       </div>

@@ -41,9 +41,29 @@ const ReviewForm = () => {
 
       if (error) throw error;
 
-      toast.success('Thank you for your review! It will be visible after approval.');
+      // Copy review to clipboard programmatically
+      try {
+        await navigator.clipboard.writeText(data.comment);
+        toast.success(
+          "Review saved! We've copied your review to your clipboard. Redirecting you to Google so you can easily paste (Ctrl+V) and share it under your name!",
+          { duration: 8000 }
+        );
+      } catch (clipErr) {
+        console.error('Clipboard copy failed:', clipErr);
+        toast.success(
+          "Review saved! Redirecting you to Google to share under your own account...",
+          { duration: 8000 }
+        );
+      }
+
+      // Reset form
       (e.target as HTMLFormElement).reset();
       setRating(0);
+
+      // Redirect to Google Reviews after 1.5 seconds
+      setTimeout(() => {
+        window.open('https://g.page/r/CRfgjfnVnxk1EAE/review', '_blank');
+      }, 1500);
     } catch (error: any) {
       if (error instanceof z.ZodError) {
         const fieldErrors: Record<string, string> = {};

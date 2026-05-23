@@ -10,6 +10,7 @@ import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 const contactSchema = z.object({
   name: z.string().trim().min(1, 'Name is required').max(100, 'Name must be less than 100 characters'),
   email: z.string().trim().email('Invalid email address').max(255, 'Email must be less than 255 characters'),
+  phone: z.string().trim().min(5, 'Phone number is too short').max(30, 'Phone must be less than 30 characters'),
   message: z.string().trim().min(1, 'Message is required').max(1000, 'Message must be less than 1000 characters'),
 });
 
@@ -26,9 +27,14 @@ const Contact = () => {
     setLoading(true);
 
     const formData = new FormData(e.currentTarget);
+    const countryCode = formData.get('country_code') as string;
+    const phoneNumber = formData.get('phone') as string;
+    const fullPhone = `${countryCode} ${phoneNumber.trim()}`;
+
     const data = {
       name: formData.get('name') as string,
       email: formData.get('email') as string,
+      phone: fullPhone,
       message: formData.get('message') as string,
     };
 
@@ -195,6 +201,41 @@ const Contact = () => {
                   />
                   {errors.email && (
                     <p className="text-destructive text-sm mt-1">{errors.email}</p>
+                  )}
+                </div>
+                <div>
+                  <label className="block text-sm font-body font-medium text-foreground mb-2">
+                    Phone Number
+                  </label>
+                  <div className="flex gap-2">
+                    <select
+                      name="country_code"
+                      defaultValue="+91"
+                      className="px-3 py-3 border border-border rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary transition-smooth w-[110px]"
+                    >
+                      <option value="+91">🇮🇳 +91</option>
+                      <option value="+971">🇦🇪 +971</option>
+                      <option value="+968">🇴🇲 +968</option>
+                      <option value="+974">🇶🇦 +974</option>
+                      <option value="+966">🇸🇦 +966</option>
+                      <option value="+965">🇰🇼 +965</option>
+                      <option value="+973">🇧🇭 +973</option>
+                      <option value="+44">🇬🇧 +44</option>
+                      <option value="+1">🇺🇸 +1</option>
+                      <option value="+61">🇦🇺 +61</option>
+                    </select>
+                    <input
+                      type="tel"
+                      name="phone"
+                      className="flex-1 px-4 py-3 border border-border rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary transition-smooth"
+                      placeholder="Phone number"
+                      required
+                      pattern="[0-9\s\-]{5,15}"
+                      title="Please enter a valid phone number"
+                    />
+                  </div>
+                  {errors.phone && (
+                    <p className="text-destructive text-sm mt-1">{errors.phone}</p>
                   )}
                 </div>
                 <div>

@@ -3,7 +3,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Mail, Trash2, CheckCircle } from 'lucide-react';
+import { Mail, Phone, Trash2, CheckCircle } from 'lucide-react';
 import { toast } from 'sonner';
 import { formatDistanceToNow } from 'date-fns';
 
@@ -11,6 +11,7 @@ interface Inquiry {
   id: string;
   name: string;
   email: string;
+  phone?: string;
   message: string;
   status: string;
   created_at: string;
@@ -90,32 +91,65 @@ const AdminInquiries = () => {
         </Card>
       ) : (
         inquiries.map((inquiry) => (
-          <Card key={inquiry.id} className="border-border">
+          <Card key={inquiry.id} className="border-border shadow-sm hover:shadow-md transition-smooth">
             <CardHeader>
-              <div className="flex items-start justify-between">
+              <div className="flex items-start justify-between flex-wrap gap-4">
                 <div>
-                  <CardTitle className="text-lg font-heading">
+                  <CardTitle className="text-xl font-heading font-bold text-foreground">
                     {inquiry.name}
                   </CardTitle>
-                  <p className="text-sm text-muted-foreground mt-1">
-                    {inquiry.email}
-                  </p>
+                  <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 mt-2 text-sm text-muted-foreground font-body">
+                    <span className="flex items-center gap-1.5 hover:text-primary transition-colors">
+                      <Mail className="w-4 h-4 text-primary/70" />
+                      <a href={`mailto:${inquiry.email}`}>{inquiry.email}</a>
+                    </span>
+                    {inquiry.phone && (
+                      <span className="flex items-center gap-1.5 hover:text-primary transition-colors">
+                        <Phone className="w-4 h-4 text-primary/70" />
+                        <a href={`tel:${inquiry.phone.replace(/\s+/g, '')}`}>{inquiry.phone}</a>
+                      </span>
+                    )}
+                  </div>
                 </div>
-                <div className="flex items-center gap-2">
-                  <Badge variant={inquiry.status === 'new' ? 'default' : 'secondary'}>
+                <div className="flex items-center gap-3">
+                  <Badge variant={inquiry.status === 'new' ? 'default' : 'secondary'} className="capitalize px-3 py-1 font-body">
                     {inquiry.status}
                   </Badge>
-                  <p className="text-xs text-muted-foreground">
+                  <p className="text-xs text-muted-foreground font-body">
                     {formatDistanceToNow(new Date(inquiry.created_at), { addSuffix: true })}
                   </p>
                 </div>
               </div>
             </CardHeader>
             <CardContent>
-              <p className="text-foreground mb-4 whitespace-pre-wrap">
+              <p className="text-foreground mb-6 whitespace-pre-wrap font-body text-base bg-secondary/10 p-4 rounded-lg border border-border/50">
                 {inquiry.message}
               </p>
-              <div className="flex gap-2">
+              <div className="flex gap-2 flex-wrap">
+                <Button
+                  size="sm"
+                  variant="outline"
+                  className="border-primary text-primary hover:bg-primary hover:text-primary-foreground transition-smooth"
+                  asChild
+                >
+                  <a href={`mailto:${inquiry.email}`}>
+                    <Mail className="w-4 h-4 mr-2" />
+                    Email Customer
+                  </a>
+                </Button>
+                {inquiry.phone && (
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    className="border-green-600 text-green-600 hover:bg-green-600 hover:text-white dark:text-green-500 dark:hover:bg-green-500 dark:hover:text-black transition-smooth"
+                    asChild
+                  >
+                    <a href={`tel:${inquiry.phone.replace(/\s+/g, '')}`}>
+                      <Phone className="w-4 h-4 mr-2" />
+                      Call Customer
+                    </a>
+                  </Button>
+                )}
                 <Button
                   size="sm"
                   variant="outline"

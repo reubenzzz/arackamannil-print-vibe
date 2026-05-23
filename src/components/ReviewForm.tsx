@@ -157,6 +157,38 @@ const ReviewForm = () => {
               </form>
             </CardContent>
           </Card>
+
+          <div className="mt-8 text-center border-t border-border pt-6 animate-fade-in">
+            <p className="text-muted-foreground text-sm mb-4">
+              Would you also like to support us on Google? Share your experience directly on our Google Business page!
+            </p>
+            <a
+              href="https://share.google/Jv47Kw3To7IA00VG0"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-3 px-6 py-3 border border-border rounded-lg bg-card text-foreground hover:bg-secondary hover:text-primary transition-smooth font-semibold shadow-sm card-hover-glow"
+            >
+              <svg className="w-5 h-5" viewBox="0 0 24 24">
+                <path
+                  fill="#EA4335"
+                  d="M12 5.04c1.8 0 3.3.6 4.6 1.8l3.4-3.4C17.9 1.4 15.1.5 12 .5c-4.8 0-8.9 2.7-11 6.8l3.9 3C5.8 7.3 8.6 5.04 12 5.04z"
+                />
+                <path
+                  fill="#4285F4"
+                  d="M23.5 12.25c0-.8-.1-1.6-.2-2.3H12v4.4h6.5c-.3 1.5-1.1 2.8-2.3 3.6l3.6 2.8c2.1-1.9 3.7-4.8 3.7-8.5z"
+                />
+                <path
+                  fill="#FBBC05"
+                  d="M4.9 10.3c-.2-.7-.3-1.5-.3-2.3s.1-1.6.3-2.3L1 2.7C.3 4.3 0 6.1 0 8s.3 3.7 1 5.3l3.9-3z"
+                />
+                <path
+                  fill="#34A853"
+                  d="M12 18.96c-3.4 0-6.2-2.26-7.1-5.26l-3.9 3c2.1 4.1 6.2 6.8 11 6.8 3.1 0 5.8-1 7.7-2.7l-3.6-2.8c-1.1.7-2.6 1.1-4.1 1.1z"
+                />
+              </svg>
+              Write a Google Review
+            </a>
+          </div>
         </motion.div>
       </div>
     </section>
